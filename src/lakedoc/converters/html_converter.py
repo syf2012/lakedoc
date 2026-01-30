@@ -88,13 +88,13 @@ class HTMLConverter(LakeBaseConverter):
         :param escape_asterisks: 是否转义星号
         :param escape_underscores: 是否转义下划线
         :param escape_misc: 是否转义其他特殊字符
-        :param heading_style: 标题样式：'atx'、'atx_closed' 或 'underlined'
+        :param heading_style: 标题样式（HeadingStyle枚举）：ATX / ATX_CLOSED / UNDERLINED / SETEXT
         :param keep_inline_images_in: 保持内联图片的父标签列表
-        :param newline_style: 换行样式：'spaces' 或 'backslash'
+        :param newline_style: 换行样式（NewLineStyle枚举）：SPACES / BACKSLASH
         :param strip: 要移除的标签列表（与 convert 互斥）
-        :param strip_document: 文档空白处理方式
-        :param strip_pre: pre 标签空白处理方式
-        :param strong_em_symbol: 粗体和斜体符号：'*' 或 '_'
+        :param strip_document: 文档空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE
+        :param strip_pre: pre 标签空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE
+        :param strong_em_symbol: 粗体和斜体符号（StrongEmSymbol枚举）：ASTERISK / UNDERSCORE
         :param sub_symbol: 下标符号，默认为 '~'
         :param sup_symbol: 上标符号，默认为 '^'
         :param table_infer_header: 是否推断表格标题行
