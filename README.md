@@ -6,7 +6,14 @@
 <p align="center">
   将语雀（Yuque）Lake 文档转换为多种格式的 Python 库
 </p>
-<p align="center"><a href="https://github.com/gupingan/lakedoc"><img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language"></a><a href="https://github.com/gupingan/lakedoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors"></a><a href="https://github.com/gupingan/lakedoc/network/members"><img src="https://img.shields.io/github/forks/gupingan/lakedoc.svg?style=flat" alt="Forks"></a><a href="https://github.com/gupingan/lakedoc/stargazers"><img src="https://img.shields.io/github/stars/gupingan/lakedoc.svg?style=flat" alt="Stargazers"></a><a href="https://github.com/gupingan/lakedoc/issues"><img src="https://img.shields.io/github/issues/gupingan/lakedoc.svg" alt="Issues"></a><a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License"></a></p>
+<p align="center">
+    <a href="https://github.com/gupingan/lakedoc"><img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language"></a>
+    <a href="https://github.com/gupingan/lakedoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors"></a>
+    <a href="https://github.com/gupingan/lakedoc/network/members"><img src="https://img.shields.io/github/forks/gupingan/lakedoc.svg?style=flat" alt="Forks"></a>
+    <a href="https://github.com/gupingan/lakedoc/stargazers"><img src="https://img.shields.io/github/stars/gupingan/lakedoc.svg?style=flat" alt="Stargazers"></a>
+    <a href="https://github.com/gupingan/lakedoc/issues"><img src="https://img.shields.io/github/issues/gupingan/lakedoc.svg" alt="Issues"></a>
+    <a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License"></a>
+</p>
 
 
 <p align="center">
