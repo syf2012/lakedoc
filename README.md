@@ -1,111 +1,251 @@
 <p align="center">
-  <h3 align="center">Welcome to Lakedoc</h3>
-  <p align="center">
-    <a href="https://github.com/gupingan/lakedoc/main.py">查看Demo</a>
-    ·
-    <a href="https://github.com/gupingan/lakedoc/issues">报告Bug</a>
-    ·
-    <a href="https://github.com/gupingan/lakedoc/issues">提出新特性</a>
-  </p>
+  <img src="docs/imgs/logo.png" alt="LakeDoc Logo" width="100%">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language">
-  <a href="https://github.com/gupingan/lakedoc/graphs/contributors" style="text-decoration: none">
+  将语雀（Yuque）Lake 文档转换为多种格式的 Python 库
+</p>
+
+<p align="center">
+  <a href="https://github.com/gupingan/lakedoc">
+    <img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language">
+  </a>
+  <a href="https://github.com/gupingan/lakedoc/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors">
   </a>
-  <a href="https://github.com/gupingan/lakedoc/network/members" style="text-decoration: none">
+  <a href="https://github.com/gupingan/lakedoc/network/members">
     <img src="https://img.shields.io/github/forks/gupingan/lakedoc.svg?style=flat" alt="Forks">
   </a>
-  <a href="https://github.com/gupingan/lakedoc/stargazers" style="text-decoration: none">
+  <a href="https://github.com/gupingan/lakedoc/stargazers">
     <img src="https://img.shields.io/github/stars/gupingan/lakedoc.svg?style=flat" alt="Stargazers">
   </a>
-  <a href="https://github.com/gupingan/lakedoc/issues" style="text-decoration: none">
+  <a href="https://github.com/gupingan/lakedoc/issues">
     <img src="https://img.shields.io/github/issues/gupingan/lakedoc.svg" alt="Issues">
   </a>
-  <a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE" style="text-decoration: none">
+  <a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License">
   </a>
 </p>
 
+<p align="center">
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#使用示例">使用示例</a> ·
+  <a href="#高级用法">高级用法</a> ·
+  <a href="#api-文档">API 文档</a> ·
+  <a href="#架构说明">架构说明</a>
+</p>
 
-## 目录
+## 简介
 
-- [模块介绍](#模块介绍)
-- [模块特性](#模块特性)
-- [快速入门](#快速入门)
-- [鸣谢](#鸣谢)
+LakeDoc 是一个用于将语雀（Yuque）Lake 文档转换为多种格式的 Python 库。它支持将包含 `<!doctype lake>` 标记的 HTML 文档转换为 Markdown、HTML 等格式，并提供灵活的扩展机制，允许开发者自定义转换器。
 
----
+## 声明
 
-## 模块介绍
+本模块仅用于对语雀官方 LakeDoc 的学习研究目的，本人未将其作为任何盈利渠道，禁止用于任何违背本国法律的行为。我更加支持语雀官方的内置导出功能，请优先使用官方提供的导出方式。
 
-本模块基于 `beautifulsoup4` 所开发，在本地把 `Lake` 文档转换为指定格式的内容
+## 特性
 
-```html
-<!doctype lake>  
-```
+- **多格式支持**：支持转换为 Markdown、HTML 等格式
+- **语雀特性适配**：支持语雀特有的卡片组件（如代码块、图表、数学公式等）
+- **灵活扩展**：支持自定义转换器并自动注册
+- **简单易用**：提供统一的 `convert()` 接口，通过参数配置转换行为
+- **调试支持**：内置调试工具，便于问题排查
 
-**遗憾**的是，当前仅支持 `Markdown` 格式(精力有限)，其余常用格式可以后续逐渐开发（欢迎各位开源社区的朋友们参与贡献）。
-
-> PS：因为该模块并不是网络爬虫工具，所以数据源请自行寻找
-
-## 模块特性
-
-- 支持`markdown` 格式：已经适配大多数的文档，已采集简单到复杂的 `Lake Document` 共计测试 `29` 篇，还原度极高；
-- 允许上层开发者`自定义转换器`、`注册转换器`、`使用转换器`等等一些更高级的行为；
-- 使用非常简单，为上层提供一个接口 `convert`，入口函数进行伪重载，让使用更加方便。
-
-![图片未加载](https://github.com/gupingan/lakedoc/raw/main/lakedoc/assets/arch-dark.png)
-
-## 快速入门
-
-请根据你的 `Python` 环境选择合适的模块安装命令。大多数情况下，下方的命令通用：
+## 安装
 
 ```bash
 pip install lakedoc
 ```
 
-安装失败时，请自行利用搜索引擎查阅解决方案。当然也可以在 [issues](https://github.com/gupingan/lakedoc/issues) 中共同解决，通常检查`镜像源`、`依赖版本`等常见问题。
-
-在安装后，你可以使用如下的方式进行接口调用：
+## 快速开始
 
 ```python
 import lakedoc
 
-# lakedoc.test_markdown()  # 可以测试是否有效
+# 从文件转换并返回结果
+result = lakedoc.convert('./input.html')
 
-# 假设 ./test_data/content1.html 是源文件，./test_data/test1.md 是保存路径
-read_path = './test_data/content1.html'
-save_path = './test_data/test1.md'
+# 从文件转换并保存
+lakedoc.convert('./input.html', saveto='./output.md')
 
-# 仅读取路径
-print(lakedoc.convert(read_path))
-# 转换路径内容并保存
-lakedoc.convert(read_path, save_path)
+# 从 HTML 内容转换（自动识别包含 <!doctype lake> 的内容）
+result = lakedoc.convert('<!doctype lake><html>...</html>')
 
-# 仅转换内容
-with open(read_path, 'r', encoding='utf-8') as fr:
-     html = fr.read()
-print(lakedoc.convert(html, is_file=False))
 # 转换内容并保存
-lakedoc.convert(html, save_path, is_file=False)
-
-# 设置的并不是文件名，而是最顶行(首行)添加 `# xxxxxxx`
-lakedoc.convert(read_path, save_path, title='# 🚛 超详细Redis7.X 安装以及快速入门加常见面试题讲解')
-
-# 保存的路径既可以是指向文件，也可以是一个已存在的目录！
-# 存储目录时，使用时间戳命名，默认文件后缀是 md，使用参数 suffix='pdf' 可修改
+lakedoc.convert('<!doctype lake><html>...</html>', saveto='./output.md')
 ```
 
-## 鸣谢
+## 使用示例
 
+### 基本转换
 
-在此，我要特别感谢以下开源项目和其贡献者们，没有他们的努力和贡献，我的项目 `lakedoc` 将寸步难行：
+```python
+import lakedoc
 
-- **Beautiful Soup 4**：[Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/) 是一个用于从 HTML 和 XML 文件中提取数据的 Python 库。
+# 添加标题
+lakedoc.convert('./input.html', saveto='./output.md', title='# 我的文档')
 
-- **Markdownify**：[Markdownify](https://github.com/matthewwithanm/python-markdownify) 是一个将 HTML 转换为 Markdown 的 Python 库。
+# 保存到目录（使用时间戳命名）
+lakedoc.convert('./input.html', saveto='./output/')
+```
 
-- **Colorama**：[Colorama](https://github.com/tartley/colorama) 是一个用于在 Windows 和其他平台上生成终端颜色输出的 Python 库，
+### 启用调试模式
 
+```python
+import lakedoc
+
+# 启用全局调试模式
+lakedoc.enable_debug()
+
+# 转换时显示详细过程
+lakedoc.convert('./input.html', debug=True)
+```
+
+## 高级用法
+
+### 自定义转换器
+
+```python
+from lakedoc.converters import LakeBaseConverter
+
+class MyConverter(LakeBaseConverter):
+    name = "custom"
+    suffix = ".custom"
+
+    def __init__(self, raw_html: str, **options):
+        self.raw_html = raw_html
+
+    def convert(self) -> str:
+        # 实现你的转换逻辑
+        return "converted content"
+
+# 使用自定义转换器
+lakedoc.convert('./input.html', converter='custom')
+```
+
+### 配置转换选项
+
+```python
+import lakedoc
+
+# 自定义 HTML 解析器
+lakedoc.convert('./input.html', bs4_builder='lxml')
+
+# 自定义需要删除的标签
+lakedoc.convert('./input.html', remove_tags={'meta', 'link', 'script'})
+
+# 配置 Markdown 输出选项
+lakedoc.convert('./input.html', 
+                heading_style='atx',
+                bullets='*+-',
+                code_language='python')
+```
+
+### 调试 API
+
+```python
+import lakedoc
+
+# 启用全局调试模式
+lakedoc.enable_debug()
+
+# 禁用全局调试模式
+lakedoc.disable_debug()
+
+# 输出调试信息
+lakedoc.debug("这是一条调试信息")
+
+# 输出带缩进和颜色的调试信息
+lakedoc.debug("这是一条调试信息", level=2, color='red')
+```
+
+## API 文档
+
+### convert(source, **options)
+
+将 Lake 文档转换为指定格式。
+
+**参数：**
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| `source` | `str` | 输入源，自动识别类型（包含 `<!doctype lake>` 则为 HTML 内容，否则为文件路径） |
+| `saveto` | `str` | `PathLike` | 保存路径（可选） |
+| `converter` | `str` | 转换器类型，默认 `'markdown'` |
+| `encoding` | `str` | 文件编码，默认 `'utf-8'` |
+| `bs4_builder` | `str` | BeautifulSoup HTML 解析器，默认 `'html.parser'` |
+| `title` | `str` | 转换后文档标题（可选） |
+| `remove_tags` | `Set[str]` | 需要从源文件中删除的标签集合 |
+| `debug` | `bool` | 是否启用调试模式 |
+
+**返回：**
+
+- 如果未提供 `saveto` 参数，返回转换后的字符串内容
+- 如果提供了 `saveto` 参数，返回 `None`（结果已保存到文件）
+
+### LakeContext
+
+上下文管理类，用于管理转换器注册和转换选项。
+
+**方法：**
+
+- `register(converter, converter_class, is_cover=True)` - 注册转换器
+- `set_options(**options)` - 设置转换选项
+- `pick(converter)` - 选择指定的转换器
+
+### LakeBaseConverter
+
+转换器基类，自定义转换器需要继承此类并实现 `convert` 方法。
+
+**类属性：**
+
+- `name` - 转换器名称（强制字段）
+- `suffix` - 输出文件后缀（强制字段）
+
+**方法：**
+
+- `convert()` - 执行转换，返回转换后的内容（抽象方法，子类必须实现）
+
+## 架构说明
+
+LakeDoc 采用分层架构设计，包含以下核心模块：
+
+- **Context 层**：上下文管理，负责转换器的注册、选择和转换流程的协调
+- **Converters 层**：转换器实现，负责实际的格式转换
+- **Utils 层**：工具模块，提供文件操作、字符串处理、异常定义和调试工具
+
+详细的架构说明请参阅 [架构文档](docs/architecture.md)。
+
+## 依赖
+
+- `beautifulsoup4` - HTML 解析
+- `colorama` - 终端颜色输出
+- `markdown` - Markdown 到 HTML 转换
+- `pymdown-extensions` - Markdown 扩展
+
+## 开发
+
+### 安装开发依赖
+
+```bash
+poetry lock
+poetry install
+```
+
+### 运行测试
+
+```bash
+poetry run pytest
+```
+
+## 许可证
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
+## 致谢
+
+感谢以下开源项目：
+
+- [Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/) - HTML/XML 解析库
+- [Markdownify](https://github.com/matthewwithanm/python-markdownify) - HTML 转 Markdown 库
+- [Colorama](https://github.com/tartley/colorama) - 终端颜色输出库

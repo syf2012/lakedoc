@@ -1,4 +1,3 @@
-import typing as t
 import re
 import json
 from urllib.parse import unquote, quote
@@ -8,7 +7,7 @@ from colorama import init, Fore, Style
 init()
 
 
-def extract_integer(text: t.Union[str], default_: t.Union[int] = 0):
+def extract_integer(text: str, default_: int = 0):
     """
     提取字符串中的整数（针对 11em、2em、2px 等字符串数据）
 
@@ -51,12 +50,12 @@ def decode_card_value(value: str) -> dict:
     :return: 字典类型的数据
     """
     raw_card_value = value[5:]
-    card_value = unquote(raw_card_value)
+    card_value = unquote(raw_card_value).replace('\n', '\\n')
     card_data = json.loads(card_value)
     return card_data
 
 
-def encode_card_value(json_data: dict) -> dict:
+def encode_card_value(json_data: dict) -> str:
     """
     复原 card value 的值（重新编码）
     :param json_data: 字典数据
@@ -66,9 +65,3 @@ def encode_card_value(json_data: dict) -> dict:
     card_value = quote(card_data)
     raw_card_value = f'data:{card_value}'
     return raw_card_value
-
-
-if __name__ == '__main__':
-    print(extract_integer('em'))
-    # cv value deleted
-    # print(decode_card_value(cv))
