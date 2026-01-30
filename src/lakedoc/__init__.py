@@ -72,8 +72,8 @@ lakedoc.convert("...", converter="pdf")
 ```
 """
 
-__version__ = "1.1.0"
-__author__ = "Gu Pingan"
+__version__ = "1.1.1"
+__author__ = "gupingan"
 
 from .context.mod import convert
 
