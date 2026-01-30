@@ -6,33 +6,15 @@
 <p align="center">
   将语雀（Yuque）Lake 文档转换为多种格式的 Python 库
 </p>
-<p align="center">
-  <a href="https://github.com/gupingan/lakedoc" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language">
-  </a>
-  <a href="https://github.com/gupingan/lakedoc/graphs/contributors" style="text-decoration: none;">
-    <img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors">
-  </a>
-  <a href="https://github.com/gupingan/lakedoc/network/members" style="text-decoration: none;">
-    <img src="https://img.shields.io/github/forks/gupingan/lakedoc.svg?style=flat" alt="Forks">
-  </a>
-  <a href="https://github.com/gupingan/lakedoc/stargazers" style="text-decoration: none;">
-    <img src="https://img.shields.io/github/stars/gupingan/lakedoc.svg?style=flat" alt="Stargazers">
-  </a>
-  <a href="https://github.com/gupingan/lakedoc/issues" style="text-decoration: none;">
-    <img src="https://img.shields.io/github/issues/gupingan/lakedoc.svg" alt="Issues">
-  </a>
-  <a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE" style="text-decoration: none;">
-    <img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License">
-  </a>
-</p>
+<p align="center"><a href="https://github.com/gupingan/lakedoc"><img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language"></a><a href="https://github.com/gupingan/lakedoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors"></a><a href="https://github.com/gupingan/lakedoc/network/members"><img src="https://img.shields.io/github/forks/gupingan/lakedoc.svg?style=flat" alt="Forks"></a><a href="https://github.com/gupingan/lakedoc/stargazers"><img src="https://img.shields.io/github/stars/gupingan/lakedoc.svg?style=flat" alt="Stargazers"></a><a href="https://github.com/gupingan/lakedoc/issues"><img src="https://img.shields.io/github/issues/gupingan/lakedoc.svg" alt="Issues"></a><a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License"></a></p>
+
 
 <p align="center">
-  <a href="#快速开始" style="text-decoration: none;">快速开始</a> ·
-  <a href="#使用示例" style="text-decoration: none;">使用示例</a> ·
-  <a href="#高级用法" style="text-decoration: none;">高级用法</a> ·
-  <a href="#api-文档" style="text-decoration: none;">API 文档</a> ·
-  <a href="#架构说明" style="text-decoration: none;">架构说明</a>
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#使用示例">使用示例</a> ·
+  <a href="#高级用法">高级用法</a> ·
+  <a href="#api-文档">API 文档</a> ·
+  <a href="#架构说明">架构说明</a>
 </p>
 
 
