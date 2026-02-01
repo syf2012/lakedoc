@@ -72,13 +72,19 @@ lakedoc.convert("...", converter="pdf")
 ```
 """
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __author__ = "gupingan"
 
 from .context.mod import convert
 
 # 转换器
 from .converters import LakeBaseConverter, MarkdownConverter
+from .converters.ht2md import (
+    HeadingStyle,
+    NewlineStyle,
+    StrongEmSymbol,
+    StripMode,
+)
 
 # 工具模块
 from .utils import file, string, errors
@@ -106,4 +112,8 @@ __all__ = [
     "debug_section",
     "debug_subsection",
     "is_debug_enabled",
+    "HeadingStyle",
+    "NewlineStyle",
+    "StrongEmSymbol",
+    "StripMode",
 ]

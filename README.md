@@ -1,13 +1,11 @@
-
 <p align="center">
-  <img src="docs/imgs/logo.png" alt="LakeDoc Logo" width="66%">
+  <img src="https://gitee.com/xiaogugyx/drawing-bed/raw/master/lakedoc-logo.png" alt="LakeDoc Logo" width="66%">
 </p>
-
-
 
 <p align="center">
   将语雀（Yuque）Lake 文档转换为多种格式的 Python 库
 </p>
+
 <p align="center">
     <a href="https://github.com/gupingan/lakedoc"><img src="https://img.shields.io/badge/language-python-brightgreen" alt="Language"></a>
     <a href="https://github.com/gupingan/lakedoc/graphs/contributors"><img src="https://img.shields.io/github/contributors/gupingan/lakedoc.svg" alt="Contributors"></a>
@@ -17,8 +15,6 @@
     <a href="https://github.com/gupingan/lakedoc/blob/master/LICENSE"><img src="https://img.shields.io/github/license/gupingan/lakedoc.svg" alt="MIT License"></a>
 </p>
 
-
-
 <p align="center">
   <a href="#快速开始">快速开始</a> ·
   <a href="#使用示例">使用示例</a> ·
@@ -26,8 +22,6 @@
   <a href="#api-文档">API 文档</a> ·
   <a href="#架构说明">架构说明</a>
 </p>
-
-
 ## 简介
 
 LakeDoc 是一个用于将语雀（Yuque）Lake 文档转换为多种格式的 Python 库。它支持将包含 `<!doctype lake>` 标记的 HTML 文档转换为 Markdown、HTML 等格式，并提供灵活的扩展机制，允许开发者自定义转换器。
@@ -120,6 +114,7 @@ lakedoc.convert('./input.html', converter='custom')
 
 ```python
 import lakedoc
+from lakedoc import HeadingStyle 
 
 # 自定义 HTML 解析器
 lakedoc.convert('./input.html', bs4_builder='lxml')
@@ -129,7 +124,7 @@ lakedoc.convert('./input.html', remove_tags={'meta', 'link', 'script'})
 
 # 配置 Markdown 输出选项
 lakedoc.convert('./input.html', 
-                heading_style='atx',
+                heading_style=HeadingStyle.ATX,
                 bullets='*+-',
                 code_language='python')
 ```
@@ -160,38 +155,38 @@ lakedoc.debug("这是一条调试信息", level=2, color='red')
 
 **参数：**
 
-| 参数                     | 类型                                       | 说明                                                         |
-| ------------------------ | ------------------------------------------ | ------------------------------------------------------------ |
+| 参数                     | 类型                                       | 说明                                                                          |
+| ------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------- |
 | `source`                 | `str`                                      | 输入源，自动识别类型（包含 `<!doctype lake>` 则为 HTML 内容，否则为文件路径） |
-| `saveto`                 | `str`                                      | `PathLike`、`str`类型，保存路径，支持目录、文件等            |
-| `converter`              | `str`                                      | 转换器类型，默认 `'markdown'`                                |
-| `encoding`               | `str`                                      | 文件编码，默认 `'utf-8'`                                     |
-| `title`                  | `str`                                      | 转换后文档标题（可选）                                       |
-| `bs4_builder`            | `str`                                      | BeautifulSoup HTML 解析器，默认 `'html.parser'`              |
-| `remove_tags`            | `Set[str]`                                 | 需要从源文件中删除的标签集合                                 |
-| `diagram_as_code`        | `bool`                                     | 是否将 `diagram` 转换为代码块格式，默认 False                |
-| `diagram_as_code_cond`   | `Optional[Callable[[str, str, str],bool]]` | 指定需要转换为代码块的回调条件函数： (src, lang, code) => bool |
-| `autolinks`              | `bool`                                     | 是否自动将 URL 转换为自动链接格式                            |
-| `bullets`                | `str`                                      | 无序列表的标记字符序列                                       |
-| `code_language`          | `str`                                      | 代码块的语言标识符                                           |
-| `code_language_callback` | `Optional[Callable[[Tag], Optional[str]]]` | 代码块语言回调函数                                           |
-| `convert`                | `Optional[List[str]]`                      | 要转换的标签列表（与 strip 互斥）                            |
-| `default_title`          | `bool`                                     | 是否为没有标题的链接使用 URL 作为默认标题                    |
-| `escape_asterisks`       | `bool`                                     | 是否转义星号                                                 |
-| `escape_underscores`     | `bool`                                     | 是否转义下划线                                               |
-| `escape_misc`            | `bool`                                     | 是否转义其他特殊字符                                         |
-| `heading_style`          | `HeadingStyle`                             | 标题样式（HeadingStyle枚举）：ATX / ATX_CLOSED / UNDERLINED / SETEXT |
-| `keep_inline_images_in`  | `Optional[List[str]]`                      | 保持内联图片的父标签列表                                     |
-| `newline_style`          | `NewlineStyle`                             | 换行样式（NewLineStyle枚举）：SPACES / BACKSLASH             |
-| `strip`                  | `Optional[List[str]]`                      | 要移除的标签列表（与 convert 互斥）                          |
-| `strip_document`         | `Optional[StripMode]`                      | 文档空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE |
-| `strip_pre`              | `Optional[StripMode]`                      | pre 标签空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE |
-| `strong_em_symbol`       | `StrongEmSymbol`                           | 粗体和斜体符号（StrongEmSymbol枚举）：ASTERISK / UNDERSCORE  |
-| `sub_symbol`             | `str`                                      | 下标符号，默认为 '~'                                         |
-| `sup_symbol`             | `str`                                      | 上标符号，默认为 '^'                                         |
-| `table_infer_header`     | `bool`                                     | 是否推断表格标题行                                           |
-| `wrap`                   | `bool`                                     | 是否自动换行                                                 |
-| `wrap_width`             | `int`                                      | 换行宽度                                                     |
+| `saveto`                 | `str`                                      | `PathLike`、`str`类型，保存路径，支持目录、文件等                             |
+| `converter`              | `str`                                      | 转换器类型，默认 `'markdown'`                                                 |
+| `encoding`               | `str`                                      | 文件编码，默认 `'utf-8'`                                                      |
+| `title`                  | `str`                                      | 转换后文档标题（可选）                                                        |
+| `bs4_builder`            | `str`                                      | BeautifulSoup HTML 解析器，默认 `'html.parser'`                               |
+| `remove_tags`            | `Set[str]`                                 | 需要从源文件中删除的标签集合                                                  |
+| `diagram_as_code`        | `bool`                                     | 是否将 `diagram` 转换为代码块格式，默认 False                                 |
+| `diagram_as_code_cond`   | `Optional[Callable[[str, str, str],bool]]` | 指定需要转换为代码块的回调条件函数： (src, lang, code) => bool                |
+| `autolinks`              | `bool`                                     | 是否自动将 URL 转换为自动链接格式                                             |
+| `bullets`                | `str`                                      | 无序列表的标记字符序列                                                        |
+| `code_language`          | `str`                                      | 代码块的语言标识符                                                            |
+| `code_language_callback` | `Optional[Callable[[Tag], Optional[str]]]` | 代码块语言回调函数                                                            |
+| `convert`                | `Optional[List[str]]`                      | 要转换的标签列表（与 strip 互斥）                                             |
+| `default_title`          | `bool`                                     | 是否为没有标题的链接使用 URL 作为默认标题                                     |
+| `escape_asterisks`       | `bool`                                     | 是否转义星号                                                                  |
+| `escape_underscores`     | `bool`                                     | 是否转义下划线                                                                |
+| `escape_misc`            | `bool`                                     | 是否转义其他特殊字符                                                          |
+| `heading_style`          | `HeadingStyle`                             | 标题样式（HeadingStyle枚举）：ATX / ATX_CLOSED / UNDERLINED / SETEXT          |
+| `keep_inline_images_in`  | `Optional[List[str]]`                      | 保持内联图片的父标签列表                                                      |
+| `newline_style`          | `NewlineStyle`                             | 换行样式（NewLineStyle枚举）：SPACES / BACKSLASH                              |
+| `strip`                  | `Optional[List[str]]`                      | 要移除的标签列表（与 convert 互斥）                                           |
+| `strip_document`         | `Optional[StripMode]`                      | 文档空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE        |
+| `strip_pre`              | `Optional[StripMode]`                      | pre 标签空白处理方式（StripMode枚举）：LSTRIP / RSTRIP / STRIP / STRIP_ONE    |
+| `strong_em_symbol`       | `StrongEmSymbol`                           | 粗体和斜体符号（StrongEmSymbol枚举）：ASTERISK / UNDERSCORE                   |
+| `sub_symbol`             | `str`                                      | 下标符号，默认为 '~'                                                          |
+| `sup_symbol`             | `str`                                      | 上标符号，默认为 '^'                                                          |
+| `table_infer_header`     | `bool`                                     | 是否推断表格标题行                                                            |
+| `wrap`                   | `bool`                                     | 是否自动换行                                                                  |
+| `wrap_width`             | `int`                                      | 换行宽度                                                                      |
 
 **返回：**
 
