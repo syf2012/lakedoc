@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="https://gitee.com/xiaogugyx/drawing-bed/raw/master/lakedoc-logo.png" alt="LakeDoc Logo" width="66%">
+  <img src="./docs/imgs/logo.png" alt="LakeDoc Logo" width="66%">
 </p>
+
 
 <p align="center">
   将语雀（Yuque）Lake 文档转换为多种格式的 Python 库
