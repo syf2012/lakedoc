@@ -280,7 +280,7 @@ class MarkdownConverter(LakeBaseConverter):
         return "![%s](%s%s)" % (alt, src, title_part)
 
     def _remove_watermark(self, src):
-        return src.replace('x-oss-process=image%2Fwatermark%2C', '') if self.remove_watermark and src else ''
+        return src.replace('x-oss-process=image%2Fwatermark%2C', '') if self.remove_watermark and src else src
 
     def convert_font(self, el, text, parent_tags):
         """转换 font 标签（保留颜色样式）"""
