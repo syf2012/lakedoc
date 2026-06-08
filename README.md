@@ -33,7 +33,7 @@ LakeDoc 是一个用于将语雀（Yuque）Lake 文档转换为多种格式的 P
 
 ## 特性
 
-- **多格式支持**：支持转换为 Markdown、HTML 等格式
+- **多格式支持**：支持转换为 Markdown、HTML、PDF 等格式
 - **语雀特性适配**：支持语雀特有的卡片组件（如代码块、图表、数学公式等）
 - **灵活扩展**：支持自定义转换器并自动注册
 - **简单易用**：提供统一的 `convert()` 接口，通过参数配置转换行为
@@ -75,6 +75,12 @@ lakedoc.convert('./input.html', saveto='./output.md', title='# 我的文档')
 
 # 保存到目录（使用时间戳命名）
 lakedoc.convert('./input.html', saveto='./output/')
+
+# 转换为 PDF
+lakedoc.convert('./input.html', saveto='./output.pdf', converter='pdf', remove_watermark=True)
+
+# 去除图片水印
+lakedoc.convert('./input.html', saveto='./output.md', remove_watermark=True)
 ```
 
 ### 启用调试模式
@@ -115,7 +121,7 @@ lakedoc.convert('./input.html', converter='custom')
 
 ```python
 import lakedoc
-from lakedoc import HeadingStyle 
+from lakedoc import HeadingStyle
 
 # 自定义 HTML 解析器
 lakedoc.convert('./input.html', bs4_builder='lxml')
@@ -128,6 +134,37 @@ lakedoc.convert('./input.html',
                 heading_style=HeadingStyle.ATX,
                 bullets='*+-',
                 code_language='python')
+
+# 去除图片水印（移除 x-oss-process 等参数）
+lakedoc.convert('./input.html', remove_watermark=True)
+
+# 转换 PDF 并使用 CSS 文件自定义样式
+lakedoc.convert('./input.html',
+                saveto='./output.pdf',
+                converter='pdf',
+                pdf_stylesheets=['./custom.css'],
+                pdf_presentational_hints=True)
+
+# 转换 PDF 并使用 CSS 对象内联样式
+from weasyprint import CSS
+custom_css = CSS(string='''
+    body { font-family: "Microsoft YaHei", sans-serif; font-size: 14px; }
+    h1 { color: #333; border-bottom: 2px solid #333; }
+    code { background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; }
+    pre { background-color: #f8f8f8; padding: 12px; border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #ddd; padding: 8px; }
+''')
+lakedoc.convert('./input.html',
+                saveto='./output.pdf',
+                converter='pdf',
+                pdf_stylesheets=[custom_css])
+
+# 混合使用 CSS 文件和 CSS 对象
+lakedoc.convert('./input.html',
+                saveto='./output.pdf',
+                converter='pdf',
+                pdf_stylesheets=['./base.css', custom_css])
 ```
 
 ### 调试 API
@@ -165,6 +202,7 @@ lakedoc.debug("这是一条调试信息", level=2, color='red')
 | `title`                  | `str`                                      | 转换后文档标题（可选）                                                        |
 | `bs4_builder`            | `str`                                      | BeautifulSoup HTML 解析器，默认 `'html.parser'`                               |
 | `remove_tags`            | `Set[str]`                                 | 需要从源文件中删除的标签集合                                                  |
+| `remove_watermark`       | `bool`                                     | 是否去除图片 URL 中的水印参数（如 `x-oss-process`），默认 False              |
 | `diagram_as_code`        | `bool`                                     | 是否将 `diagram` 转换为代码块格式，默认 False                                 |
 | `diagram_as_code_cond`   | `Optional[Callable[[str, str, str],bool]]` | 指定需要转换为代码块的回调条件函数： (src, lang, code) => bool                |
 | `autolinks`              | `bool`                                     | 是否自动将 URL 转换为自动链接格式                                             |
@@ -188,6 +226,9 @@ lakedoc.debug("这是一条调试信息", level=2, color='red')
 | `table_infer_header`     | `bool`                                     | 是否推断表格标题行                                                            |
 | `wrap`                   | `bool`                                     | 是否自动换行                                                                  |
 | `wrap_width`             | `int`                                      | 换行宽度                                                                      |
+| `pdf_stylesheets`        | `Optional[List[Union[str, CSS]]]`          | PDF 额外 CSS 样式表，元素可以是 CSS 文件路径或 `weasyprint.CSS` 对象         |
+| `pdf_base_url`           | `Optional[str]`                            | weasyprint 解析相对 URL 时使用的基准 URL，默认使用当前工作目录                |
+| `pdf_presentational_hints`| `bool`                                    | 是否遵循 HTML 元素的表现性属性（如 align、width 等），默认 True               |
 
 **返回：**
 
@@ -233,6 +274,7 @@ LakeDoc 采用分层架构设计，包含以下核心模块：
 - `colorama` - 终端颜色输出
 - `markdown` - Markdown 到 HTML 转换
 - `pymdown-extensions` - Markdown 扩展
+- `weasyprint` - HTML 到 PDF 渲染（PDF 转换器需要，依赖系统级 GTK/Pango 库）
 
 ## 开发
 
