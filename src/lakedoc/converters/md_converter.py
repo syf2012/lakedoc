@@ -18,6 +18,7 @@ Markdown 转换器
 from typing import Optional, Callable, List, Dict, Set
 from urllib.parse import unquote
 from pathlib import Path
+import re
 from bs4 import BeautifulSoup, FeatureNotFound
 from bs4.element import Tag
 from lakedoc.utils import string, debug as debug_module, errors
@@ -50,6 +51,7 @@ class MarkdownConverter(LakeBaseConverter):
         bs4_builder: str = "html.parser",
         title: Optional[str] = None,
         remove_tags: Optional[Set[str]] = None,
+        remove_watermark: bool = False,
         diagram_as_code: bool = False,
         diagram_as_code_cond: Optional[Callable[[str, str, str], bool]] = None,
         autolinks: bool = True,
@@ -81,6 +83,7 @@ class MarkdownConverter(LakeBaseConverter):
         :param bs4_builder: BeautifulSoup 的树构建器，默认为 'html.parser'
         :param title: 指定设置转换后 Markdown内容顶行的标题，默认为 None
         :param remove_tags: 处理 html 时应该删除哪些标签，默认为 {'meta', 'link', 'script', 'style'}
+        :param remove_watermark: 是否移除水印，默认 False
         :param diagram_as_code: 是否将 diagram 转换为代码块格式，默认 False
         :param diagram_as_code_cond: 指定需要转换为代码块的回调条件函数，参数是 (src, lang, code)
         :param autolinks: 是否自动将 URL 转换为自动链接格式
@@ -142,6 +145,7 @@ class MarkdownConverter(LakeBaseConverter):
 
         # 其它属性
         self.title = title
+        self.remove_watermark = remove_watermark
         self.diagram_as_code = diagram_as_code
         self.diagram_as_code_cond = diagram_as_code_cond
         self.card_counter = {}
@@ -171,11 +175,11 @@ class MarkdownConverter(LakeBaseConverter):
         if "color" in styles or "background-color" in styles:
             if el.parent and el in el.parent.contents and el.string:
                 new_tag = BeautifulSoup(
-                    f'<font style="{raw_style}">{el.string}</font>', self.bs4_builder
-                ).font
-                el = el.replace_with(new_tag)
+                    f'<span style="{raw_style}">{el.string}</span>', self.bs4_builder
+                ).span
+                el.replace_with(new_tag)
                 debug_module.debug(
-                    f"应用颜色样式: <{el.name}>", level=3, color="magenta"
+                    f"应用颜色样式: <span>", level=3, color="magenta"
                 )
 
         if "text-indent" in styles:
@@ -208,7 +212,7 @@ class MarkdownConverter(LakeBaseConverter):
         removed_count = 0
         styled_count = 0
 
-        for tag in self.soup.find_all(True):
+        for tag in list(self.soup.find_all(True)):
             tag_count += 1
             self.render_styles(tag)
 
@@ -252,6 +256,31 @@ class MarkdownConverter(LakeBaseConverter):
         setattr(self._ht2md_converter, "convert_card", self.convert_card)
         setattr(self._ht2md_converter, "convert_font", self.convert_font)
         setattr(self._ht2md_converter, "convert_li", self.convert_li)
+        setattr(self._ht2md_converter, "convert_img", self.convert_img)
+
+    def convert_img(self, el, text, parent_tags):
+        """转换 img 标签，支持去除水印参数"""
+        alt = el.attrs.get("alt", None) or ""
+        src = el.attrs.get("src", None) or ""
+        title = el.attrs.get("title", None) or ""
+        title_part = ' "%s"' % title.replace('"', r'\"') if title else ""
+
+        # 处理内联图片
+        if (
+            "_inline" in parent_tags
+            and el.parent.name not in getattr(
+                getattr(self._ht2md_converter, "options", None), "keep_inline_images_in", []
+            )
+        ):
+            return alt
+
+        # 去除水印参数
+        src = self._remove_watermark(src)
+
+        return "![%s](%s%s)" % (alt, src, title_part)
+
+    def _remove_watermark(self, src):
+        return src.replace('x-oss-process=image%2Fwatermark%2C', '') if self.remove_watermark and src else ''
 
     def convert_font(self, el, text, parent_tags):
         """转换 font 标签（保留颜色样式）"""
@@ -280,6 +309,8 @@ class MarkdownConverter(LakeBaseConverter):
         elif card_type in ("image", "flowchart2", "board"):
             card_data = string.decode_card_value(el.attrs.get("value", ""))
             src = card_data.get("src", "")
+            # 去除水印参数
+            src = self._remove_watermark(src)
             if debug_module.is_debug_enabled():
                 debug_module.debug(f"  -> 图片: {src[:50]}...", level=4)
             return f"  ![图片未加载]({src})\n"

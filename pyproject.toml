@@ -13,6 +13,7 @@ dependencies = [
   "colorama (==0.4.6)",
   "markdown (==3.4.4)",
   "pymdown-extensions (==10.0.1)",
+  "weasyprint (>=62.0)",
 ]
 
 [project.urls]

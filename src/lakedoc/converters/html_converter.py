@@ -44,6 +44,7 @@ class HTMLConverter(LakeBaseConverter):
         bs4_builder: str = "html.parser",
         title: Optional[str] = None,
         remove_tags: Optional[Set[str]] = None,
+        remove_watermark: bool = False,
         diagram_as_code: bool = False,
         diagram_as_code_cond: Optional[Callable[[str, str, str],bool]] = None,
         autolinks: bool = True,
@@ -77,6 +78,7 @@ class HTMLConverter(LakeBaseConverter):
         :param bs4_builder: BeautifulSoup 的树构建器，默认为 'html.parser'
         :param title: 指定设置转换后 HTML内容的标题，默认为 None
         :param remove_tags: 处理 html 时应该删除哪些标签，默认为 {'meta', 'link', 'script', 'style'}
+        :param remove_watermark: 是否删除水印，默认为 False
         :param diagram_as_code: 是否将 diagram 转换为代码块格式，默认 False
         :param diagram_as_code_cond: 指定需要转换为代码块的回调条件函数，参数是 (src, lang, code)
         :param autolinks: 是否自动将 URL 转换为自动链接格式
@@ -113,6 +115,7 @@ class HTMLConverter(LakeBaseConverter):
             "bs4_builder": bs4_builder,
             "title": title,
             "remove_tags": remove_tags,
+            "remove_watermark": remove_watermark,
             "diagram_as_code": diagram_as_code,
             "diagram_as_code_cond": diagram_as_code_cond,
             "autolinks": autolinks,

@@ -7,5 +7,6 @@ Lakedoc 转换器模块
 from .base import LakeBaseConverter
 from .md_converter import MarkdownConverter
 from .html_converter import HTMLConverter
+from .pdf_converter import PdfConverter
 
-__all__ = ["LakeBaseConverter", "MarkdownConverter", "HTMLConverter"]
+__all__ = ["LakeBaseConverter", "MarkdownConverter", "HTMLConverter", "PdfConverter"]
