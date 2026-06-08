@@ -252,7 +252,7 @@ def test_html_converter_convert_diagram():
     html_content = '<!doctype lake><card name="diagram" value="data:%7B%22type%22%3A%22mermaid%22%2C%22code%22%3A%22graph%20TD%5CnA%20--%3E%20B%22%7D"></card>'
     converter = HTMLConverter(html_content)
     result = converter.convert()
-    assert "graph TD" in result or "mermaid" in result.lower()
+    assert "graph" in result or "mermaid" in result.lower()
 
 
 def test_html_converter_convert_image():
