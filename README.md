@@ -41,6 +41,8 @@ LakeDoc 是一个用于将语雀（Yuque）Lake 文档转换为多种格式的 P
 
 ## 安装
 
+> 需要 Python >= 3.10
+
 ```bash
 pip install lakedoc
 ```
