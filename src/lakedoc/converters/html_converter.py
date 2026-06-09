@@ -139,6 +139,7 @@ class HTMLConverter(LakeBaseConverter):
             "table_infer_header": table_infer_header,
             "wrap": wrap,
             "wrap_width": wrap_width,
+            "is_out_html": True,
         }
 
         self._md_converter = MarkdownConverter(raw_html, **md_options)
