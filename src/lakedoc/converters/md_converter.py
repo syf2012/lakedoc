@@ -75,6 +75,7 @@ class MarkdownConverter(LakeBaseConverter):
         table_infer_header: bool = False,
         wrap: bool = False,
         wrap_width: int = 80,
+        is_out_html: bool = False,
     ):
         """
         Lake Doc -> Markdown Doc
@@ -149,6 +150,7 @@ class MarkdownConverter(LakeBaseConverter):
         self.diagram_as_code = diagram_as_code
         self.diagram_as_code_cond = diagram_as_code_cond
         self.card_counter = {}
+        self.is_out_html = is_out_html
 
     def render_styles(self, el):
         """
@@ -175,11 +177,11 @@ class MarkdownConverter(LakeBaseConverter):
         if "color" in styles or "background-color" in styles:
             if el.parent and el in el.parent.contents and el.string:
                 new_tag = BeautifulSoup(
-                    f'<span style="{raw_style}">{el.string}</span>', self.bs4_builder
-                ).span
+                    f'<font style="{raw_style}">{el.string}</font>', self.bs4_builder
+                ).font
                 el.replace_with(new_tag)
                 debug_module.debug(
-                    f"应用颜色样式: <span>", level=3, color="magenta"
+                    f"应用颜色样式: <font>", level=3, color="magenta"
                 )
 
         if "text-indent" in styles:
@@ -290,7 +292,11 @@ class MarkdownConverter(LakeBaseConverter):
                 f"转换 font 标签: style={style[:50] if len(style) > 50 else style}",
                 level=3,
             )
-        return str(el) if text else ""
+        #  若是在伪标签中，直接返回文本内容
+        if "_noformat" in parent_tags:
+            return text
+        # 若是 输出HTML，则返回 HTML 标签内容，否则返回文本内容
+        return str(el) if text and self.is_out_html else text
 
     def convert_card(self, el, text, parent_tags):
         """转换 card 标签（语雀特有的卡片组件）"""
@@ -414,6 +420,8 @@ class MarkdownConverter(LakeBaseConverter):
                 image_title = image.get("title", "图片无标题")
                 image_src = image.get("src")
                 width = image.get("original", {}).get("width", 0)
+                # 去除水印参数
+                image_src = self._remove_watermark(image_src)
                 if not width or total_width <= 0:
                     image_gallery.append(f"![图片-{image_title}]({image_src})")
                 else:

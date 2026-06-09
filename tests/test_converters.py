@@ -126,10 +126,10 @@ def test_render_styles_with_color():
     p_tag = converter.soup.find("p")
     converter.render_styles(p_tag)
 
-    # 验证 span 标签被创建
-    span_tag = converter.soup.find("span")
-    assert span_tag is not None
-    assert "color: red" in span_tag.get("style", "")
+    # 验证 font 标签被创建
+    font_tag = converter.soup.find("font")
+    assert font_tag is not None
+    assert "color: red" in font_tag.get("style", "")
 
 
 def test_render_styles_with_background_color():
@@ -140,10 +140,10 @@ def test_render_styles_with_background_color():
     p_tag = converter.soup.find("p")
     converter.render_styles(p_tag)
 
-    # 验证 span 标签被创建
-    span_tag = converter.soup.find("span")
-    assert span_tag is not None
-    assert "background-color: yellow" in span_tag.get("style", "")
+    # 验证 font 标签被创建
+    font_tag = converter.soup.find("font")
+    assert font_tag is not None
+    assert "background-color: yellow" in font_tag.get("style", "")
 
 
 def test_render_styles_with_text_indent():
@@ -169,8 +169,8 @@ def test_render_styles_with_multiple_styles():
     converter = MarkdownConverter(html_content)
 
     converter.render_styles(converter.soup.p)
-    assert converter.soup.span
-    assert style in str(converter.soup.span)
+    assert converter.soup.font
+    assert style in str(converter.soup.font)
 
 
 def test_render_styles_with_empty_style():
